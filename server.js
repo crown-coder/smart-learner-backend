@@ -18,7 +18,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-    origin: 'https://unique-shelves-beta.netlify.app/',
+    origin: 'https://unique-shelves-beta.netlify.app',
     credentials: true,
 }));
 app.use(express.json())
