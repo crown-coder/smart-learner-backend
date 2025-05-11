@@ -20,7 +20,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://sinfas-multifimension-beta.netlify.app',
     credentials: true,
 }));
 app.use(express.json())
