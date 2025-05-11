@@ -1,17 +1,28 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 exports.protect = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]
-    if (!token) return res.status(401).json({ msg: 'No token provided' })
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ msg: 'No token provided' });
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decoded
-        next()
-    } catch {
-        res.status(401).json({ msg: 'Invalid token' })
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Ensure decoded token has required fields
+        if (!decoded.id) {
+            return res.status(401).json({ msg: 'Invalid token format' });
+        }
+        
+        req.user = {
+            _id: decoded.id,  // Standardize to _id
+            email: decoded.email, // If needed
+            role: decoded.role   // If needed
+        };
+        
+        next();
+    } catch (error) {
+        res.status(401).json({ msg: 'Invalid token' });
     }
-}
+};
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {

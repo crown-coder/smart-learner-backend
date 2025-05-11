@@ -3,10 +3,14 @@ const router = express.Router()
 const courseCtrl = require('../controllers/courseController')
 const { protect, restrictTo } = require('../middlewares/auth')
 
-//Mentor routes
+// Public routes
+router.get('/all', courseCtrl.getAllCourses);
+
+router.get('/my-courses', protect, restrictTo('mentor'), courseCtrl.getMyCourses);
+
+// Mentor-only routes
 router.post('/', protect, restrictTo('mentor'), courseCtrl.createCourse)
-router.get('/my-courses', protect, restrictTo('mentor'), courseCtrl.getMyCourses)
 router.put('/:id', protect, restrictTo('mentor'), courseCtrl.updateCourse)
 router.delete('/:id', protect, restrictTo('mentor'), courseCtrl.deleteCourse)
-
-module.exports = router
+router.get('/:id', courseCtrl.getCourseById)
+module.exports = router;

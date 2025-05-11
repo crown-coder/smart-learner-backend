@@ -61,3 +61,26 @@ exports.deleteCourse = async (req, res) => {
         res.status(500).json({ msg: err.message })
     }
 }
+
+// Get all courses (for users)
+exports.getAllCourses = async (req, res) => {
+    try {
+        const courses = await Course.find().populate('mentor', 'fullName email'); // optional: populate mentor info
+        res.json(courses);
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};
+
+// Get single course by ID
+exports.getCourseById = async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id).populate('mentor', 'fullName email');
+        if (!course) {
+            return res.status(404).json({ msg: 'Course not found' });
+        }
+        res.json(course);
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+};

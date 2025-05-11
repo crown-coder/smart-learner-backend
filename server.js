@@ -11,6 +11,8 @@ const productRoutes = require('./routes/productRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 const videoRoutes = require('./routes/videoRoutes')
 const certificateRoutes = require('./routes/certificateRoutes')
+const paymentRoutes = require('./routes/paymentRoutes');
+const paidRoutes = require('./routes/paidRoutes');
 
 dotenv.config()
 connectDB()
@@ -18,7 +20,7 @@ connectDB()
 const app = express()
 
 app.use(cors({
-    origin: 'https://unique-shelves-beta.netlify.app',
+    origin: 'http://localhost:5173',
     credentials: true,
 }));
 app.use(express.json())
@@ -33,6 +35,8 @@ app.use('/api/products', productRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/videos', videoRoutes)
 app.use('/api/certificate', certificateRoutes)
+app.use('/api/payment', paymentRoutes);
+app.use('/api/paid-courses', paidRoutes);
 
 app.get('/', (req, res) => {
     res.send('E-learning API is running...')
